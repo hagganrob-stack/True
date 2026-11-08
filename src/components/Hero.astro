@@ -1,0 +1,78 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BookButton from './BookButton.astro';
+
+/**
+ * Full-bleed photo hero with a subtle charcoal scrim behind the text
+ * (the only gradient allowed – BRIEF §3.2). The image is the LCP element,
+ * so it loads eagerly with high priority and is preloaded by the layout.
+ */
+interface Props {
+  image: ImageMetadata;
+  alt: string;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  secondary?: { label: string; href: string };
+  /** CSS object-position for the photo, mobile then desktop. */
+  position?: { mobile: string; desktop: string };
+}
+const {
+  image,
+  alt,
+  eyebrow,
+  title,
+  intro,
+  secondary,
+  position = { mobile: '60% 30%', desktop: '70% 35%' },
+} = Astro.props;
+---
+
+<section class="on-dark relative isolate overflow-hidden bg-dark text-white" aria-labelledby="hero-heading">
+  <Picture
+    src={image}
+    alt={alt}
+    formats={['avif', 'webp']}
+    widths={[480, 768, 1024, 1500]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+    class="hero-img absolute inset-0 -z-20 h-full w-full object-cover"
+    style={`--pos-m: ${position.mobile}; --pos-d: ${position.desktop}`}
+  />
+  <!-- Scrim: bottom-up on mobile, left-to-right on desktop -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 -z-10 bg-linear-to-t from-dark/95 via-dark/75 to-dark/25 md:bg-linear-to-r md:from-dark/85 md:via-dark/50 md:to-transparent"
+  >
+  </div>
+
+  <div class="container-site flex min-h-[480px] items-end pt-24 pb-10 md:min-h-[620px] md:items-center md:py-24">
+    <div class="max-w-xl">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 id="hero-heading" class="mt-3 text-white md:mt-4">{title}</h1>
+      <p class="mt-5 text-[18px] leading-[30px] text-white/90 md:text-intro md:leading-(--text-intro--line-height)">{intro}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <BookButton variant="light" location="hero" />
+        {secondary && (
+          <a href={secondary.href} class="btn btn-outline-light">
+            {secondary.label}
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .hero-img {
+    object-position: var(--pos-m);
+  }
+  @media (min-width: 768px) {
+    .hero-img {
+      object-position: var(--pos-d);
+    }
+  }
+</style>

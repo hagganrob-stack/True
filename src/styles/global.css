@@ -1,0 +1,252 @@
+/* Self-hosted fonts (Latin subset only) */
+@import '@fontsource/fraunces/latin-500.css';
+@import '@fontsource/fraunces/latin-600.css';
+@import '@fontsource/dm-sans/latin-400.css';
+@import '@fontsource/dm-sans/latin-500.css';
+@import '@fontsource/dm-sans/latin-600.css';
+
+@import 'tailwindcss';
+
+/*
+ * Design tokens – BRIEF §3.2.
+ * Brand colours (use exactly): taupe #A89F91, charcoal #2C2C2C.
+ * Never use `taupe` for text or thin icons on light backgrounds (2.5:1) –
+ * use `taupe-text` instead. On charcoal, use `taupe-light` for small text.
+ */
+@theme {
+  --color-bg: #faf8f5;
+  --color-surface: #ffffff;
+  --color-surface-soft: #eeebe6;
+  --color-ink: #2c2c2c;
+  --color-ink-muted: #5f5a52;
+  --color-taupe: #a89f91;
+  --color-taupe-text: #6e665a;
+  --color-taupe-light: #c9c2b7;
+  --color-dark: #2c2c2c;
+  --color-line: #e2ddd5;
+  --color-confirm: #fff4c2;
+
+  --font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --radius-card: 12px;
+
+  --text-body: 17px;
+  --text-body--line-height: 28px;
+  --text-intro: 20px;
+  --text-intro--line-height: 32px;
+  --text-small: 14px;
+  --text-small--line-height: 22px;
+  --text-eyebrow: 13px;
+  --text-eyebrow--line-height: 20px;
+}
+
+@layer base {
+  :root {
+    --focus: var(--color-ink);
+    color-scheme: light;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  h1 {
+    font-size: 36px;
+    line-height: 1.12;
+  }
+  h2 {
+    font-size: 28px;
+    line-height: 1.2;
+    font-weight: 500;
+  }
+  h3 {
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+  @media (min-width: 768px) {
+    h1 {
+      font-size: 52px;
+      line-height: 1.08;
+    }
+    h2 {
+      font-size: 36px;
+      line-height: 1.15;
+    }
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+  }
+
+  /* Visible focus ring: 2px, 2px offset. Swaps to taupe-light on dark sections. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .on-dark {
+    --focus: var(--color-taupe-light);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-site {
+      padding-inline: 2rem;
+    }
+  }
+
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: var(--text-eyebrow);
+    line-height: var(--text-eyebrow--line-height);
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-taupe-text);
+  }
+  .on-dark .eyebrow {
+    color: var(--color-taupe-light);
+  }
+
+  .intro {
+    font-size: var(--text-intro);
+    line-height: var(--text-intro--line-height);
+  }
+
+  /* Buttons – full pill, 16px / 600, min 44px tap target */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease;
+    white-space: nowrap;
+  }
+  .btn-sm {
+    min-height: 44px;
+    padding: 0.5rem 1.125rem;
+    font-size: 15px;
+  }
+  /* Primary: charcoal fill, white text (14:1). Hover: taupe fill, charcoal text (5.3:1). */
+  .btn-primary {
+    background-color: var(--color-ink);
+    color: #fff;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-taupe);
+    color: var(--color-ink);
+  }
+  /* Secondary: taupe outline, charcoal text. */
+  .btn-secondary {
+    background-color: transparent;
+    border-color: var(--color-taupe);
+    color: var(--color-ink);
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-taupe);
+  }
+  /* On photos / charcoal: light primary and light outline. */
+  .btn-light {
+    background-color: #fff;
+    color: var(--color-ink);
+  }
+  .btn-light:hover {
+    background-color: var(--color-taupe);
+    color: var(--color-ink);
+  }
+  .btn-outline-light {
+    background-color: transparent;
+    border-color: var(--color-taupe-light);
+    color: #fff;
+  }
+  .btn-outline-light:hover {
+    background-color: var(--color-taupe-light);
+    color: var(--color-ink);
+  }
+
+  .link {
+    color: var(--color-taupe-text);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--color-taupe);
+  }
+  .link:hover {
+    color: var(--color-ink);
+  }
+  .on-dark .link {
+    color: var(--color-taupe-light);
+  }
+  .on-dark .link:hover {
+    color: #fff;
+  }
+
+  /* [CONFIRM: …] placeholders – deliberately visible until Rachel answers. */
+  .confirm {
+    background: var(--color-confirm);
+    color: #4a3b00;
+    border: 1px dashed #b38f00;
+    border-radius: 4px;
+    padding: 0 0.3em;
+    font-family: var(--font-sans);
+    font-size: 0.85em;
+    font-weight: 500;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+  }
+}

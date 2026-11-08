@@ -1,0 +1,27 @@
+---
+import { business, isPlaceholder } from '../content/site';
+import Confirm from './Confirm.astro';
+
+/** Phone as a tracked tel: link, or a visible placeholder until confirmed. */
+interface Props {
+  location: string;
+  class?: string;
+}
+const { location, class: className = '' } = Astro.props;
+const phone = business.phone;
+---
+
+{
+  isPlaceholder(phone) ? (
+    <Confirm note={phone.confirm} />
+  ) : (
+    <a
+      href={`tel:${phone.tel}`}
+      class:list={['link', className]}
+      data-track="Phone click"
+      data-track-location={location}
+    >
+      {phone.display}
+    </a>
+  )
+}

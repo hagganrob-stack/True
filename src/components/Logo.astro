@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/logos/true-mark.png';
+import stacked from '../assets/logos/true-logo.png';
+
+/**
+ * True Hairdressers logo (supplied by Rachel, Nov 2026).
+ * - `inline` (header): the circle "T" mark beside a text wordmark, because the
+ *   stacked logo is too small to read at header height.
+ * - `stacked`: the full logo as supplied (footer, 404).
+ * The source PNG is only 268×409px – ask for an SVG/high-res version for print
+ * and larger uses.
+ */
+interface Props {
+  variant?: 'inline' | 'stacked';
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+const { variant = 'inline', tone = 'dark', class: className = '' } = Astro.props;
+const main = tone === 'light' ? 'text-white' : 'text-ink';
+const sub = tone === 'light' ? 'text-taupe-light' : 'text-taupe-text';
+---
+
+{
+  variant === 'stacked' ? (
+    <Image
+      src={stacked}
+      alt="True Hairdressers"
+      width={88}
+      densities={[1, 2]}
+      loading="lazy"
+      decoding="async"
+      class:list={['h-auto', className]}
+    />
+  ) : (
+    <span class:list={['inline-flex items-center gap-3', className]}>
+      <Image
+        src={mark}
+        alt=""
+        width={44}
+        height={44}
+        densities={[1, 2, 3]}
+        loading="eager"
+        decoding="async"
+        class="h-11 w-11 shrink-0"
+      />
+      <span class="inline-flex flex-col leading-none">
+        <span class:list={['font-serif text-[26px] font-semibold tracking-tight', main]}>True</span>
+        <span class:list={['mt-1 hidden text-[10px] font-semibold tracking-[0.2em] whitespace-nowrap sm:block', sub]}>
+          HAIRDRESSERS · WHITNASH
+        </span>
+      </span>
+    </span>
+  )
+}

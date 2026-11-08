@@ -1,0 +1,37 @@
+---
+import { Picture } from 'astro:assets';
+import PawPrint from '@lucide/astro/icons/paw-print';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+import monty from '../assets/photos/monty-woodland-path.jpg';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<article class:list={['grid overflow-hidden rounded-[12px] border border-line bg-surface sm:grid-cols-2', className]}>
+  <Picture
+    src={monty}
+    alt="Monty, True Hairdressers' Head of Client Happiness, sitting on a woodland path"
+    formats={['avif', 'webp']}
+    widths={[360, 540, 720]}
+    sizes="(min-width: 1024px) 340px, (min-width: 640px) 45vw, 92vw"
+    loading="lazy"
+    decoding="async"
+    class="aspect-[4/5] h-full w-full object-cover sm:aspect-auto sm:min-h-[380px]"
+    style="object-position: 42% 62%"
+  />
+  <div class="flex flex-col justify-center p-6 md:p-8">
+    <p class="eyebrow flex items-center gap-2">
+      <PawPrint size={16} stroke-width={1.5} aria-hidden="true" /> Head of Client Happiness
+    </p>
+    <h3 class="mt-3 text-[26px] md:text-[28px]">Meet Monty</h3>
+    <p class="mt-3 text-ink-muted">
+      Meet Monty, our Head of Client Happiness. He takes his job very seriously.
+    </p>
+    <a href="/about/#monty" class="link mt-5 inline-flex min-h-11 items-center gap-1.5 self-start">
+      More about Monty <ArrowRight size={18} stroke-width={1.5} aria-hidden="true" />
+    </a>
+  </div>
+</article>

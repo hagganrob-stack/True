@@ -1,0 +1,19 @@
+# build output
+dist/
+.vercel/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+
+# environment
+.env
+.env.*
+
+# misc
+.DS_Store
+lighthouse-*.html
+lighthouse-*.json

@@ -1,0 +1,9 @@
+---
+/** Visible "[CONFIRM: …]" placeholder for facts we don't have yet. */
+interface Props {
+  note: string;
+}
+const { note } = Astro.props;
+---
+
+<mark class="confirm" data-confirm={note}>[CONFIRM: {note}]</mark>

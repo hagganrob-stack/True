@@ -1,0 +1,181 @@
+---
+import { getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Scissors from '@lucide/astro/icons/scissors';
+import Palette from '@lucide/astro/icons/palette';
+import Wind from '@lucide/astro/icons/wind';
+import Sparkles from '@lucide/astro/icons/sparkles';
+import Award from '@lucide/astro/icons/award';
+import MapPin from '@lucide/astro/icons/map-pin';
+import Phone from '@lucide/astro/icons/phone';
+import Clock from '@lucide/astro/icons/clock';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import AboutTeaser from '../components/AboutTeaser.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import MontyCard from '../components/MontyCard.astro';
+import ProductStrip from '../components/ProductStrip.astro';
+import HoursTable from '../components/HoursTable.astro';
+import OpenNow from '../components/OpenNow.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import BookCTA from '../components/BookCTA.astro';
+import PhoneLink from '../components/PhoneLink.astro';
+
+import { business, serviceGroups, lateNightNote, type ServiceGroup } from '../content/site';
+
+import heroImg from '../assets/stock/stylist-curling-blonde-waves.jpg';
+import cuttingImg from '../assets/stock/scissors-cutting-wet-hair.jpg';
+import colourImg from '../assets/stock/brunette-balayage-waves.jpg';
+import blowDryImg from '../assets/stock/stylist-sectioning-hair.jpg';
+import hairUpImg from '../assets/stock/occasion-updo-hair-vine.jpg';
+
+// Preload the hero (LCP) – same widths/sizes as <Hero />'s AVIF source.
+const heroSizes = '100vw';
+const heroPreload = await getImage({ src: heroImg, widths: [480, 768, 1024, 1500], format: 'avif' });
+
+const cards: {
+  group: ServiceGroup;
+  icon: any;
+  image: { src: ImageMetadata; alt: string; position?: string };
+}[] = [
+  {
+    group: 'cutting',
+    icon: Scissors,
+    image: { src: cuttingImg, alt: 'Close-up of scissors cutting a section of wet brown hair', position: '50% 50%' },
+  },
+  {
+    group: 'colour',
+    icon: Palette,
+    image: { src: colourImg, alt: 'Long brunette hair with soft caramel balayage waves', position: '50% 40%' },
+  },
+  {
+    group: 'blow-dries',
+    icon: Wind,
+    image: { src: blowDryImg, alt: 'Stylist sectioning and styling long wavy blonde hair', position: '40% 40%' },
+  },
+  {
+    group: 'hair-up',
+    icon: Sparkles,
+    image: { src: hairUpImg, alt: 'Soft low updo decorated with a crystal hair vine', position: '50% 40%' },
+  },
+];
+
+const stats = [
+  { big: `${business.owner.yearsQualified} years`, small: 'qualified' },
+  { big: `${business.owner.yearsInSalons} years`, small: 'working in salons' },
+  { big: 'Goldwell', small: 'trained colourist' },
+];
+---
+
+<BaseLayout
+  title="True Hairdressers | Hairdresser in Whitnash, Leamington Spa"
+  description="Friendly local hairdresser on Home Farm Crescent, Whitnash. Cuts, colour, blow-dries and hair up by Goldwell-trained Rachel. Book online with Fresha."
+  preload={{ srcset: heroPreload.srcSet.attribute, sizes: heroSizes, type: 'image/avif' }}
+>
+  <Hero
+    image={heroImg}
+    alt="Stylist curling long blonde hair into loose waves with tongs"
+    eyebrow="Whitnash · Leamington Spa"
+    title="Your friendly local hairdresser in Whitnash"
+    intro="Relaxed, expert hairdressing on Home Farm Crescent, from someone who's been doing hair for over 25 years – and who grew up just down the road."
+    secondary={{ label: 'See services', href: '/services/' }}
+    position={{ mobile: '58% 30%', desktop: '72% 35%' }}
+  />
+
+  <AboutTeaser />
+
+  <!-- Experience strip -->
+  <section aria-label="Experience" class="border-y border-line bg-surface-soft">
+    <ul class="container-site grid divide-y divide-taupe/40 py-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0 sm:py-10">
+      {
+        stats.map((s) => (
+          <li class="flex items-center gap-4 py-5 sm:flex-col sm:gap-1 sm:py-0 sm:text-center">
+            <Award size={26} stroke-width={1.5} aria-hidden="true" class="shrink-0 text-taupe-text sm:mb-2" />
+            <p>
+              <span class="block font-serif text-[30px] leading-tight font-semibold md:text-[34px]">{s.big}</span>
+              <span class="text-ink-muted">{s.small}</span>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- Services overview -->
+  <section class="py-16 md:py-24" aria-labelledby="services-heading">
+    <div class="container-site">
+      <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div class="max-w-2xl">
+          <SectionLabel>Services</SectionLabel>
+          <h2 id="services-heading" class="mt-3">What I do</h2>
+          <p class="mt-4 text-ink-muted">
+            Everything from a tidy-up to a total transformation, all done by Rachel using professional Goldwell colour.
+          </p>
+        </div>
+        <a href="/services/" class="link inline-flex min-h-11 items-center self-start md:self-auto">See all hair services</a>
+      </div>
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          cards.map((c) => (
+            <ServiceCard
+              name={serviceGroups[c.group].name}
+              summary={serviceGroups[c.group].summary}
+              href={`/services/#${c.group}`}
+              linkText={serviceGroups[c.group].anchorText}
+              icon={c.icon}
+              image={c.image}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Monty + products -->
+  <section class="bg-surface-soft py-16 md:py-20" aria-label="Monty and the products we use">
+    <div class="container-site grid gap-6 lg:grid-cols-5">
+      <MontyCard class="lg:col-span-3" />
+      <ProductStrip class="lg:col-span-2" />
+    </div>
+  </section>
+
+  <!-- Find us -->
+  <section class="py-16 md:py-24" aria-labelledby="find-us-heading">
+    <div class="container-site grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <SectionLabel>Visit the salon</SectionLabel>
+        <h2 id="find-us-heading" class="mt-3">Find us</h2>
+        <p class="mt-4">
+          You'll find us on the Home Farm Crescent shops in Whitnash.{' '}
+          <strong class="font-semibold">{lateNightNote}</strong>
+        </p>
+        <OpenNow class="mt-6" />
+
+        <div class="mt-8 rounded-[12px] border border-line bg-surface p-4 md:p-6">
+          <h3 class="mb-3 flex items-center gap-2 px-3 font-sans text-[16px] font-semibold">
+            <Clock size={20} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" /> Opening hours
+          </h3>
+          <HoursTable />
+        </div>
+
+        <address class="mt-8 space-y-3 not-italic">
+          <p class="flex gap-3">
+            <MapPin size={20} stroke-width={1.5} aria-hidden="true" class="mt-1 shrink-0 text-taupe-text" />
+            <span>{business.name}, {business.addressLine}</span>
+          </p>
+          <p class="flex gap-3">
+            <Phone size={20} stroke-width={1.5} aria-hidden="true" class="mt-1 shrink-0 text-taupe-text" />
+            <PhoneLink location="home-find-us" />
+          </p>
+        </address>
+      </div>
+      <div class="lg:col-span-7">
+        <MapEmbed />
+      </div>
+    </div>
+  </section>
+
+  <BookCTA location="home-cta" />
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import { hours, formatHours, lateNightNote } from '../content/site';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<table class:list={['w-full border-collapse text-left', className]}>
+  <caption class="sr-only">Opening hours</caption>
+  <tbody>
+    {
+      hours.map((d) => (
+        <tr
+          data-hours-row
+          data-js-day={d.jsDay}
+          class="border-b border-line last:border-0 data-[today=true]:bg-surface-soft data-[today=true]:font-semibold"
+        >
+          <th scope="row" class="py-2.5 pr-4 pl-3 font-medium">
+            {d.day}
+            <span
+              data-today-label
+              hidden
+              class="ml-2 rounded-full bg-ink px-2 py-0.5 align-middle text-[12px] font-semibold tracking-wide text-white"
+            >
+              Today
+            </span>
+          </th>
+          <td class:list={['py-2.5 pr-3 text-right tabular-nums', !d.hours && 'text-ink-muted']}>
+            {formatHours(d)}
+            {d.short === 'Wed' && <span class="sr-only"> (late night)</span>}
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+<p class="mt-3 text-small text-ink-muted">{lateNightNote}</p>
+
+<script>
+  import { initHours } from '../scripts/hours';
+  initHours();
+</script>

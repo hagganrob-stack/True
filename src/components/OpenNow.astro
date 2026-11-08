@@ -1,0 +1,31 @@
+---
+/**
+ * "Open now · until 3pm" / "Closed · opens Wed 9am" – computed client-side.
+ * No-JS fallback: a plain summary of opening days. State is always given in
+ * text; the dot colour is a secondary cue only.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<p
+  class:list={[
+    'group inline-flex items-center gap-2.5 rounded-full border border-line bg-surface px-4 py-2 text-small font-semibold text-ink',
+    className,
+  ]}
+  data-open-now
+  data-state="unknown"
+  role="status"
+>
+  <span
+    aria-hidden="true"
+    class="h-2.5 w-2.5 rounded-full bg-taupe group-data-[state=open]:bg-[#3d7a4c]"></span>
+  <span data-open-text>Open Tue, Wed, Fri &amp; Sat</span>
+</p>
+
+<script>
+  import { initHours } from '../scripts/hours';
+  initHours();
+</script>

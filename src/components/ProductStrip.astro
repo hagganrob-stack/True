@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import goldwell from '../assets/logos/goldwell.png';
+
+/**
+ * Only Goldwell and Maria Nila (BRIEF §5). Maria Nila is a styled wordmark
+ * until Rob adds brief-assets/images/maria-nila.png – then swap in an <Image />.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<article class:list={['flex h-full flex-col justify-center rounded-[12px] border border-line bg-surface p-6 md:p-8', className]}>
+  <p class="eyebrow">We use and recommend</p>
+  <h3 class="mt-3 text-[26px] md:text-[28px]">Goldwell and Maria Nila</h3>
+  <p class="mt-3 text-ink-muted">Goldwell colour, plus Maria Nila care and styling products to keep it looking good at home.</p>
+  <ul class="mt-6 grid grid-cols-2 items-center gap-6" aria-label="Brands">
+    <li class="flex h-16 items-center">
+      <Image
+        src={goldwell}
+        alt="Goldwell"
+        width={180}
+        loading="lazy"
+        decoding="async"
+        class="h-auto max-h-14 w-auto max-w-full opacity-80 grayscale transition hover:opacity-100 hover:grayscale-0"
+      />
+    </li>
+    <li class="flex h-16 items-center">
+      <span
+        class="font-sans text-[18px] font-medium tracking-[0.2em] whitespace-nowrap sm:text-[22px] sm:tracking-[0.28em] text-ink-muted uppercase transition-colors hover:text-ink"
+      >
+        Maria&nbsp;Nila
+      </span>
+    </li>
+  </ul>
+</article>

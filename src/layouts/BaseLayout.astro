@@ -1,0 +1,112 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import Analytics from '@vercel/analytics/astro';
+import SpeedInsights from '@vercel/speed-insights/astro';
+import frauncesUrl from '@fontsource/fraunces/files/fraunces-latin-600-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { business } from '../content/site';
+import { hairSalonSchema } from '../lib/schema';
+import heroImage from '../assets/stock/stylist-curling-blonde-waves.jpg';
+import logoImage from '../assets/logos/true-logo.png';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Extra JSON-LD objects for this page (Person, BreadcrumbList…). */
+  schema?: object[];
+  /** Responsive preload for the LCP image (from getImage). */
+  preload?: { srcset: string; sizes: string; type: string };
+  noindex?: boolean;
+}
+
+const { title, description, schema = [], preload, noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+// Interim 1200×630 share image – replaced by a hero + wordmark composite in build step 7.
+const ogImage = await getImage({ src: heroImage, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogImageUrl = new URL(ogImage.src, Astro.site).href;
+
+const logo = await getImage({ src: logoImage, format: 'png' });
+const logoUrl = new URL(logo.src, Astro.site).href;
+
+const jsonLd = [hairSalonSchema({ image: ogImageUrl, logo: logoUrl }), ...schema];
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#FAF8F5" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preload" href={frauncesUrl} as="font" type="font/woff2" crossorigin />
+    {
+      preload && (
+        <link
+          rel="preload"
+          as="image"
+          imagesrcset={preload.srcset}
+          imagesizes={preload.sizes}
+          type={preload.type}
+          fetchpriority="high"
+        />
+      )
+    }
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="True Hairdressers, Whitnash" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
+  </head>
+  <body class="min-h-screen">
+    <a
+      href="#main"
+      class="sr-only z-50 rounded-full bg-ink px-5 py-3 font-semibold text-white focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    >
+      Skip to main content
+    </a>
+    <Header />
+    <main id="main" tabindex="-1" class="focus:outline-none">
+      <slot />
+    </main>
+    <Footer />
+
+    <Analytics />
+    <SpeedInsights />
+    <script>
+      // Custom events: Fresha and phone clicks (BRIEF §8). Cookieless.
+      import { track } from '@vercel/analytics';
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element | null)?.closest<HTMLElement>('[data-track]');
+        if (!el?.dataset.track) return;
+        track(el.dataset.track, {
+          location: el.dataset.trackLocation ?? 'unknown',
+          page: window.location.pathname,
+        });
+      });
+    </script>
+  </body>
+</html>

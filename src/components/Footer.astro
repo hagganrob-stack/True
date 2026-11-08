@@ -1,0 +1,108 @@
+---
+import MapPin from '@lucide/astro/icons/map-pin';
+import Phone from '@lucide/astro/icons/phone';
+import Clock from '@lucide/astro/icons/clock';
+import Logo from './Logo.astro';
+import NewTab from './NewTab.astro';
+import PhoneLink from './PhoneLink.astro';
+import { business, links, hours, formatHours, nav } from '../content/site';
+
+const year = new Date().getFullYear();
+const iconProps = { size: 20, 'stroke-width': 1.5, 'aria-hidden': 'true' as const, class: 'mt-1 shrink-0 text-taupe-light' };
+const social = [
+  { label: 'Facebook', href: links.facebook },
+  { label: 'Instagram', href: links.instagram },
+  { label: 'Book on Fresha', href: links.fresha, track: 'Fresha click' },
+];
+---
+
+<footer class="on-dark bg-dark text-white">
+  <div class="container-site grid gap-10 py-14 md:grid-cols-12 md:py-16">
+    <div class="md:col-span-4">
+      <a href="/" class="inline-block rounded" aria-label="True Hairdressers – home">
+        <Logo variant="stacked" tone="light" />
+      </a>
+      <p class="mt-5 max-w-xs text-small text-taupe-light">
+        Your friendly local hairdresser in the heart of Whitnash, Leamington Spa.
+      </p>
+    </div>
+
+    <div class="md:col-span-4">
+      <h2 class="font-sans text-[13px] font-semibold tracking-[0.16em] text-taupe-light uppercase">Visit</h2>
+      <address class="mt-4 not-italic">
+        <p class="flex gap-3">
+          <MapPin {...iconProps} />
+          <span>
+            {business.name}<br />
+            {business.address.street}<br />
+            {business.address.locality}, {business.address.town}<br />
+            {business.address.postcode}
+          </span>
+        </p>
+        <p class="mt-3 flex gap-3">
+          <Phone {...iconProps} />
+          <PhoneLink location="footer" />
+        </p>
+      </address>
+    </div>
+
+    <div class="md:col-span-4">
+      <h2 class="flex items-center gap-2 font-sans text-[13px] font-semibold tracking-[0.16em] text-taupe-light uppercase">
+        <Clock size={16} stroke-width={1.5} aria-hidden="true" /> Opening hours
+      </h2>
+      <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-small">
+        {
+          hours.map((d) => (
+            <>
+              <dt class="text-taupe-light">{d.short}</dt>
+              <dd>{formatHours(d)}</dd>
+            </>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <div class="border-t border-white/15">
+    <div class="container-site flex flex-col gap-6 py-6 text-small md:flex-row md:items-center md:justify-between">
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {
+          social.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener"
+                class="link inline-flex min-h-11 items-center"
+                data-track={s.track}
+                data-track-location={s.track ? 'footer' : undefined}
+              >
+                {s.label}
+                <NewTab />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <nav aria-label="Footer">
+        <ul class="flex flex-wrap gap-x-6 gap-y-2">
+          {
+            nav.map((item) => (
+              <li>
+                <a href={item.href} class="inline-flex min-h-11 items-center text-white no-underline hover:underline">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+    <div class="container-site flex flex-col gap-2 pb-8 text-small text-taupe-light md:flex-row md:justify-between">
+      <p>© {year} {business.name}</p>
+      <p>
+        Website by <a href={links.peakSeo} target="_blank" rel="noopener" class="link">Peak SEO<NewTab /></a>
+      </p>
+    </div>
+  </div>
+</footer>

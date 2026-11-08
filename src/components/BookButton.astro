@@ -1,0 +1,34 @@
+---
+import { links } from '../content/site';
+import NewTab from './NewTab.astro';
+
+/**
+ * "Book on Fresha" link-button. Opens Fresha in a new tab and fires a
+ * Vercel Analytics custom event (see BaseLayout) tagged with `location`.
+ */
+interface Props {
+  label?: string;
+  variant?: 'primary' | 'secondary' | 'light' | 'outline-light';
+  size?: 'md' | 'sm';
+  location: string;
+  class?: string;
+}
+const {
+  label = 'Book on Fresha',
+  variant = 'primary',
+  size = 'md',
+  location,
+  class: className = '',
+} = Astro.props;
+---
+
+<a
+  href={links.fresha}
+  target="_blank"
+  rel="noopener"
+  class:list={['btn', `btn-${variant}`, size === 'sm' && 'btn-sm', className]}
+  data-track="Fresha click"
+  data-track-location={location}
+>
+  {label}<NewTab />
+</a>
