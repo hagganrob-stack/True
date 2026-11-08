@@ -1,11 +1,10 @@
 ---
-import { getImage } from 'astro:assets';
+import { getImage, Picture } from 'astro:assets';
 import Phone from '@lucide/astro/icons/phone';
 import MapPin from '@lucide/astro/icons/map-pin';
 import Clock from '@lucide/astro/icons/clock';
 import Calendar from '@lucide/astro/icons/calendar';
 import Car from '@lucide/astro/icons/car';
-import Camera from '@lucide/astro/icons/camera';
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
@@ -23,6 +22,8 @@ import { breadcrumbSchema } from '../lib/schema';
 import { PAGE_HEADER_WIDTHS, PAGE_HEADER_SIZES } from '../lib/images';
 
 import woodland from '../assets/photos/rachel-monty-woodland.jpg';
+import salonStations from '../assets/photos/salon-styling-stations.jpg';
+import salonSeating from '../assets/photos/salon-seating.jpg';
 
 const crumbs = [
   { name: 'Home', path: '/' },
@@ -109,14 +110,39 @@ const preload = await getImage({ src: woodland, widths: PAGE_HEADER_WIDTHS, form
       </div>
       <div class="space-y-6 lg:col-span-7">
         <MapEmbed />
-        {
-          salonDetails.salonPhotos && (
-            <div class="flex min-h-40 w-full flex-col py-8 items-center justify-center gap-3 rounded-[12px] border border-dashed border-taupe bg-surface text-center">
-              <Camera size={28} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />
-              <p class="text-small font-medium text-ink-muted">Photo of the salon coming soon</p>
-            </div>
-          )
-        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20" aria-labelledby="salon-heading">
+    <div class="container-site">
+      <SectionLabel>Inside the salon</SectionLabel>
+      <h2 id="salon-heading" class="mt-3">Come on in</h2>
+      <div class="mt-8 grid gap-4 md:grid-cols-5 md:gap-6">
+        <div class="md:col-span-3">
+          <Picture
+            src={salonStations}
+            alt="Inside True Hairdressers: two styling chairs and mirrors, with a backwash basin at the back"
+            formats={['avif', 'webp']}
+            widths={[400, 640, 1000]}
+            sizes="(min-width: 1200px) 680px, (min-width: 768px) 58vw, 92vw"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[16/10] h-full w-full rounded-[12px] object-cover"
+          />
+        </div>
+        <div class="md:col-span-2">
+          <Picture
+            src={salonSeating}
+            alt="The waiting area at True Hairdressers: two leather chairs with cream throws by the front door"
+            formats={['avif', 'webp']}
+            widths={[300, 500, 740]}
+            sizes="(min-width: 1200px) 450px, (min-width: 768px) 38vw, 92vw"
+            loading="lazy"
+            decoding="async"
+            class="aspect-[16/10] h-full w-full rounded-[12px] object-cover"
+          />
+        </div>
       </div>
     </div>
   </section>

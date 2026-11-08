@@ -5,7 +5,6 @@ import Scissors from '@lucide/astro/icons/scissors';
 import Palette from '@lucide/astro/icons/palette';
 import Wind from '@lucide/astro/icons/wind';
 import Sparkles from '@lucide/astro/icons/sparkles';
-import Info from '@lucide/astro/icons/info';
 import ArrowRight from '@lucide/astro/icons/arrow-right';
 
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -15,7 +14,7 @@ import BookCTA from '../components/BookCTA.astro';
 import Confirm from '../components/Confirm.astro';
 import SectionLabel from '../components/SectionLabel.astro';
 
-import { services, serviceGroups, salonDetails, isPlaceholder, type ServiceGroup } from '../content/site';
+import { services, serviceGroups, type ServiceGroup } from '../content/site';
 import { breadcrumbSchema } from '../lib/schema';
 import { PAGE_HEADER_WIDTHS, PAGE_HEADER_SIZES } from '../lib/images';
 
@@ -136,17 +135,6 @@ const groups: {
                 ))}
               </div>
 
-              {g.id === 'colour' && (
-                <aside class="mt-4 flex gap-3 rounded-[12px] border border-line bg-surface p-5" aria-label="Before your colour appointment">
-                  <Info size={22} stroke-width={1.5} aria-hidden="true" class="mt-0.5 shrink-0 text-taupe-text" />
-                  <div>
-                    <p class="font-semibold">New to colour with us?</p>
-                    <p class="mt-1 text-small text-ink-muted">
-                      {isPlaceholder(salonDetails.patchTest) ? <Confirm note={salonDetails.patchTest.confirm} /> : salonDetails.patchTest}
-                    </p>
-                  </div>
-                </aside>
-              )}
 
               {g.id === 'colour' && (
                 <a href="/about/" class="link mt-6 inline-flex min-h-11 items-center gap-1.5">

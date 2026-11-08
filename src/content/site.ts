@@ -21,8 +21,8 @@ export const isPlaceholder = (v: unknown): v is Placeholder =>
 // Business & NAP – must match the Google Business Profile exactly.
 // ---------------------------------------------------------------------------
 
-/** Placeholder until the domain is confirmed. Also used by astro.config. */
-export const SITE_URL = 'https://true-hairdressers.vercel.app';
+/** Live domain (www is primary; the bare domain redirects). Also used by astro.config. */
+export const SITE_URL = 'https://www.truehairdressers.co.uk';
 
 export const business = {
   name: 'True Hairdressers',
@@ -30,12 +30,12 @@ export const business = {
   tagline: 'Your friendly local hairdresser in the heart of Whitnash',
   owner: {
     givenName: 'Rachel',
-    familyName: confirm("Rachel's surname, if she wants it used") as Placeholder | string,
+    familyName: 'Palmer' as Placeholder | string,
     jobTitle: 'Hairdresser and owner',
     yearsQualified: 22,
     yearsInSalons: 27,
   },
-  yearOpened: confirm('year True opened') as Placeholder | number,
+  yearOpened: 2017 as Placeholder | number,
   address: {
     street: '75 Home Farm Crescent',
     locality: 'Whitnash',
@@ -48,7 +48,8 @@ export const business = {
   addressLine: '75 Home Farm Crescent, Whitnash, Leamington Spa CV31 2QY',
   geo: { lat: 52.2690469, lng: -1.5209224 },
   areaServed: ['Whitnash', 'Leamington Spa', 'Warwick'],
-  phone: confirm('salon phone number') as Placeholder | { display: string; tel: string },
+  /** From the Google Business Profile. */
+  phone: { display: '07772 036680', tel: '+447772036680' } as Placeholder | { display: string; tel: string },
   email: confirm('email – or leave off') as Placeholder | string | null,
 } as const;
 
@@ -149,8 +150,7 @@ export const services: Service[] = [
     name: 'Creative colour',
     group: 'colour',
     description:
-      'Highlights, lowlights and more creative colour work, backed by Goldwell Creative Colour and Colour Masters training.',
-    confirm: 'specific techniques offered, e.g. balayage, foils, toners – list only what Rachel confirms',
+      'Highlights, lowlights, balayage, foils and toners, backed by Goldwell Creative Colour and Colour Masters training.',
   },
   {
     id: 'blow-dries',
@@ -162,8 +162,7 @@ export const services: Service[] = [
     id: 'hair-up',
     name: 'Hair up',
     group: 'hair-up',
-    description: 'Weddings, proms, parties and special occasions.',
-    confirm: 'does Rachel do bridal/wedding-morning hair, trials or travel?',
+    description: 'Proms, parties, nights out and special occasions.',
   },
 ];
 
@@ -178,7 +177,7 @@ export const serviceGroups: Record<
   },
   colour: {
     name: 'Colour',
-    summary: 'Goldwell colour, from root touch-ups and grey coverage to creative colour.',
+    summary: 'Goldwell colour, from root touch-ups and grey coverage to balayage and foils.',
     anchorText: 'hair colour in Whitnash',
   },
   'blow-dries': {
@@ -188,7 +187,7 @@ export const serviceGroups: Record<
   },
   'hair-up': {
     name: 'Hair up',
-    summary: 'Weddings, proms, parties and special occasions.',
+    summary: 'Proms, parties, nights out and special occasions.',
     anchorText: 'hair up in Leamington Spa',
   },
 };
@@ -211,22 +210,18 @@ export const products = [
 ] as const;
 
 // ---------------------------------------------------------------------------
-// Salon details still waiting on Rachel (BRIEF §10). Swap each confirm() for
-// the real answer (a string) once she replies.
+// Salon details (answers from Rachel, Nov 2026). Patch-test policy is
+// deliberately left off the site at Rachel's request.
 // ---------------------------------------------------------------------------
 
 export const salonDetails = {
-  drinks: confirm('offer drinks?') as Placeholder | string,
-  parking: confirm('parking – is there free parking outside the parade?') as Placeholder | string,
-  patchTest: confirm('patch/skin test policy for colour clients') as Placeholder | string,
-  monty: confirm('is Monty in the salon most days? breed? (useful for anyone with allergies)') as
-    | Placeholder
-    | string,
-  mariaNilaAngle: confirm('Maria Nila is vegan/cruelty-free – only mention if Rachel wants that angle') as
-    | Placeholder
-    | string
-    | null,
-  salonPhotos: confirm('photos of the salon front and inside') as Placeholder | null,
+  drinks: 'Tea and coffee on offer' as Placeholder | string,
+  parking: 'Free parking outside the parade.' as Placeholder | string,
+  monty:
+    "Monty's a toy poodle and he's in the salon most days – worth knowing if you have a dog allergy." as
+      | Placeholder
+      | string,
+  mariaNilaAngle: 'Maria Nila products are 100% vegan and cruelty-free.' as Placeholder | string | null,
 };
 
 // ---------------------------------------------------------------------------

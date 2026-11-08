@@ -36,3 +36,17 @@ await sharp(`${root}/src/assets/logos/true-mark.png`)
   .flatten({ background: '#FAF8F5' })
   .png()
   .toFile(`${root}/public/apple-touch-icon.png`);
+
+// Salon photos (from Rachel's Fresha listing, Nov 2026). Crop the top strip
+// to remove the small "fresha" watermark in the top-left corner.
+for (const [src, out, top] of [
+  ['salon/fresha-salon-seating.avif', 'photos/salon-seating.jpg', 34],
+  ['salon/fresha-salon-styling-stations.avif', 'photos/salon-styling-stations.jpg', 48],
+]) {
+  const img = sharp(`${root}/brief-assets/${src}`);
+  const { width, height } = await img.metadata();
+  await img
+    .extract({ left: 0, top, width, height: height - top })
+    .jpeg({ quality: 90, mozjpeg: true })
+    .toFile(`${root}/src/assets/${out}`);
+}

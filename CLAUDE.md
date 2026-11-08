@@ -24,7 +24,7 @@ node scripts/make-og-image.cjs          # re-render public/og-image.jpg (needs P
 
 ## Deployment
 
-Vercel project `true-hairdressers` (team Peak), linked to GitHub `hagganrob-stack/True`. Every push to the production branch deploys automatically; other branches get preview URLs. Production alias until the domain is confirmed: https://true-hairdressers.vercel.app (also `SITE_URL` in `site.ts` – update both at go-live).
+Vercel project `true-hairdressers` (team Peak), linked to GitHub `hagganrob-stack/True`. Every push to the production branch deploys automatically; other branches get preview URLs. Live domain: **https://www.truehairdressers.co.uk** (www is primary; the bare domain 308-redirects to it). Also reachable at https://true-hairdressers.vercel.app. DNS stays at SiteGround (which also runs the salon's email – never touch the MX/SPF records); only the web A/CNAME records point at Vercel.
 
 ## Layout
 
@@ -32,7 +32,7 @@ Vercel project `true-hairdressers` (team Peak), linked to GitHub `hagganrob-stac
 - `src/lib/schema.ts` – JSON-LD builders (HairSalon sitewide, Person, BreadcrumbList). No AggregateRating/Review.
 - `src/layouts/BaseLayout.astro` – head (title, description, canonical, OG/Twitter, JSON-LD, preloads), skip link, header, footer, analytics.
 - `src/components/` – Header, Footer, Logo, Hero, SectionLabel, ServiceCard, AboutTeaser, MontyCard, ProductStrip, HoursTable, OpenNow, MapEmbed, BookCTA, BookButton, PhoneLink, Confirm, NewTab.
-- `src/assets/photos/` real photos of Rachel and Monty; `src/assets/stock/` stock photos; `src/assets/logos/` True logo + circle mark, Goldwell.
+- `src/assets/photos/` real photos of Rachel and Monty, and of the salon (from Fresha); `src/assets/stock/` stock photos; `src/assets/logos/` True logo (stacked, used in header and footer via `Logo`), circle mark (favicon/OG only), Goldwell.
 - `brief-assets/` – original files from Basecamp (sources only, not served).
 
 ## Design tokens (BRIEF §3.2) – Tailwind names

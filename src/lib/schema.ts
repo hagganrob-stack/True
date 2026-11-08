@@ -26,7 +26,8 @@ export function hairSalonSchema(opts: { image: string; logo?: string }) {
     url: `${SITE_URL}/`,
     image: opts.image,
     logo: opts.logo ?? opts.image,
-    ...(isPlaceholder(business.phone) ? {} : { telephone: business.phone.display }),
+    ...(isPlaceholder(business.phone) ? {} : { telephone: business.phone.tel }),
+    ...(isPlaceholder(business.yearOpened) ? {} : { foundingDate: String(business.yearOpened) }),
     address: {
       '@type': 'PostalAddress',
       streetAddress: business.address.street,

@@ -46,14 +46,10 @@ const { owner } = business;
       position: '50% 20%',
     }}
   >
-    <p>I was born and bred in Whitnash, so True really is my local salon as much as yours.</p>
-    {
-      isPlaceholder(owner.familyName) && (
-        <p class="mt-3 text-small">
-          <Confirm note={owner.familyName.confirm} />
-        </p>
-      )
-    }
+    <p>
+      I'm {isPlaceholder(owner.familyName) ? owner.givenName : `${owner.givenName} ${owner.familyName}`}. I was born
+      and bred in Whitnash, so True really is my local salon as much as yours.
+    </p>
   </PageHeader>
 
   <!-- Story -->
@@ -119,10 +115,12 @@ const { owner } = business;
           hair.
         </p>
         {
-          isPlaceholder(salonDetails.mariaNilaAngle) && (
+          isPlaceholder(salonDetails.mariaNilaAngle) ? (
             <p class="mt-3">
               <Confirm note={salonDetails.mariaNilaAngle.confirm} />
             </p>
+          ) : (
+            salonDetails.mariaNilaAngle && <p class="mt-3 text-[18px] leading-[30px]">{salonDetails.mariaNilaAngle}</p>
           )
         }
         <ul class="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6" aria-label="Brands">
