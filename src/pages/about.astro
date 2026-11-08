@@ -1,0 +1,181 @@
+---
+import { getImage, Picture } from 'astro:assets';
+import Award from '@lucide/astro/icons/award';
+import PawPrint from '@lucide/astro/icons/paw-print';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BookButton from '../components/BookButton.astro';
+import BookCTA from '../components/BookCTA.astro';
+import Confirm from '../components/Confirm.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+import { business, qualifications, salonDetails, isPlaceholder } from '../content/site';
+import { breadcrumbSchema, personSchema } from '../lib/schema';
+import { PAGE_HEADER_WIDTHS, PAGE_HEADER_SIZES } from '../lib/images';
+
+import closeup from '../assets/photos/rachel-monty-closeup.jpg';
+import woodland from '../assets/photos/rachel-monty-woodland.jpg';
+import monty from '../assets/photos/monty-woodland-path.jpg';
+import goldwell from '../assets/logos/goldwell.png';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about/' },
+];
+
+const preload = await getImage({ src: closeup, widths: PAGE_HEADER_WIDTHS, format: 'avif' });
+const personImage = await getImage({ src: closeup, width: 800, format: 'jpg' });
+const { owner } = business;
+---
+
+<BaseLayout
+  title="About Rachel | Whitnash Hairdresser with 27 Years' Experience | True"
+  description="Born and bred in Whitnash, Rachel has 27 years in salons and Goldwell colour and cutting training. Meet her – and Monty, Head of Client Happiness."
+  schema={[breadcrumbSchema(crumbs), personSchema(new URL(personImage.src, Astro.site).href)]}
+  preload={{ srcset: preload.srcSet.attribute, sizes: PAGE_HEADER_SIZES, type: 'image/avif' }}
+>
+  <PageHeader
+    crumbs={crumbs}
+    eyebrow="Your local hairdresser"
+    title="About Rachel"
+    image={{
+      src: closeup,
+      alt: 'Rachel, owner of True Hairdressers, holding her dog Monty',
+      position: '50% 20%',
+    }}
+  >
+    <p>I was born and bred in Whitnash, so True really is my local salon as much as yours.</p>
+    {
+      isPlaceholder(owner.familyName) && (
+        <p class="mt-3 text-small">
+          <Confirm note={owner.familyName.confirm} />
+        </p>
+      )
+    }
+  </PageHeader>
+
+  <!-- Story -->
+  <section class="py-16 md:py-24" aria-labelledby="story-heading">
+    <div class="container-site grid items-center gap-10 md:grid-cols-12 md:gap-16">
+      <div class="md:col-span-7 md:order-2">
+        <SectionLabel>My story</SectionLabel>
+        <h2 id="story-heading" class="mt-3">{owner.yearsInSalons} years in salons</h2>
+        <div class="mt-6 space-y-5 text-[18px] leading-[30px]">
+          <p>
+            I've worked in salons for {owner.yearsInSalons} years and have been a qualified hairdresser for
+            {' '}{owner.yearsQualified}. Along the way I've trained with Goldwell in creative colour, creative cutting
+            and their Colour Masters programme, so you're in experienced hands whether you want a simple trim or
+            something completely new.
+          </p>
+          <p>
+            I opened True {isPlaceholder(business.yearOpened) ? <Confirm note={business.yearOpened.confirm} /> : `in ${business.yearOpened}`}
+            {' '}to give Whitnash a friendly, relaxed salon where you're treated like a neighbour, not a number.
+          </p>
+        </div>
+        <a href="/services/" class="link mt-8 inline-flex min-h-11 items-center gap-1.5">
+          See my hair services in Whitnash <ArrowRight size={18} stroke-width={1.5} aria-hidden="true" />
+        </a>
+      </div>
+      <div class="md:col-span-5">
+        <Picture
+          src={woodland}
+          alt="Rachel smiling in autumn woodland, holding her dog Monty"
+          formats={['avif', 'webp']}
+          widths={[400, 640, 900]}
+          sizes="(min-width: 1024px) 460px, (min-width: 768px) 40vw, 92vw"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[4/5] w-full rounded-[12px] object-cover"
+          style="object-position: 50% 18%"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Qualifications + products -->
+  <section class="border-y border-line bg-surface-soft py-16 md:py-20" aria-labelledby="quals-heading">
+    <div class="container-site grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <SectionLabel>Training</SectionLabel>
+        <h2 id="quals-heading" class="mt-3">Qualifications</h2>
+        <ul class="mt-6 grid gap-3">
+          {
+            qualifications.map((q) => (
+              <li class="flex items-center gap-4 rounded-[12px] border border-line bg-surface px-5 py-4">
+                <Award size={24} stroke-width={1.5} aria-hidden="true" class="shrink-0 text-taupe-text" />
+                <span class="font-medium">{q}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <SectionLabel>Products</SectionLabel>
+        <h2 class="mt-3">What I use on your hair</h2>
+        <p class="mt-6 text-[18px] leading-[30px]">
+          Goldwell colour and Maria Nila care and styling products – chosen because they work and they're kind to your
+          hair.
+        </p>
+        {
+          isPlaceholder(salonDetails.mariaNilaAngle) && (
+            <p class="mt-3">
+              <Confirm note={salonDetails.mariaNilaAngle.confirm} />
+            </p>
+          )
+        }
+        <ul class="mt-8 flex flex-wrap items-center gap-x-10 gap-y-6" aria-label="Brands">
+          <li>
+            <Picture src={goldwell} alt="Goldwell" width={180} formats={['avif', 'webp']} loading="lazy" decoding="async" class="h-auto max-h-14 w-auto" />
+          </li>
+          <li class="font-sans text-[20px] font-medium tracking-[0.24em] whitespace-nowrap text-ink uppercase">Maria&nbsp;Nila</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monty -->
+  <section id="monty" class="scroll-mt-24 py-16 md:py-24" aria-labelledby="monty-heading">
+    <div class="container-site grid items-center gap-10 md:grid-cols-12 md:gap-16">
+      <div class="relative md:col-span-5">
+        <div aria-hidden="true" class="absolute -bottom-3 -left-3 hidden h-2/3 w-2/3 rounded-[12px] bg-taupe md:block"></div>
+        <Picture
+          src={monty}
+          alt="Monty, True Hairdressers' Head of Client Happiness, sitting on a woodland path"
+          formats={['avif', 'webp']}
+          widths={[400, 640, 900]}
+          sizes="(min-width: 1024px) 460px, (min-width: 768px) 40vw, 92vw"
+          loading="lazy"
+          decoding="async"
+          class="relative aspect-[4/5] w-full rounded-[12px] object-cover"
+          style="object-position: 42% 60%"
+        />
+      </div>
+      <div class="md:col-span-7">
+        <SectionLabel>
+          <PawPrint size={16} stroke-width={1.5} aria-hidden="true" /> Four paws, one job
+        </SectionLabel>
+        <h2 id="monty-heading" class="mt-3">Monty, Head of Client Happiness</h2>
+        <p class="mt-6 text-[18px] leading-[30px]">
+          Every good salon needs a manager, and ours has four paws. Monty's in charge of greetings, moral support and
+          checking everyone's happy with their new look.
+        </p>
+        {
+          isPlaceholder(salonDetails.monty) ? (
+            <p class="mt-3">
+              <Confirm note={salonDetails.monty.confirm} />
+            </p>
+          ) : (
+            <p class="mt-3 text-ink-muted">{salonDetails.monty}</p>
+          )
+        }
+        <div class="mt-8">
+          <BookButton location="about-monty" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <BookCTA location="about-cta" />
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+import ChevronRight from '@lucide/astro/icons/chevron-right';
+
+/** Visible breadcrumb trail. Pair with breadcrumbSchema() in the page's `schema` prop. */
+interface Props {
+  items: { name: string; path: string }[];
+  class?: string;
+}
+const { items, class: className = '' } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class:list={['text-small', className]}>
+  <ol class="flex flex-wrap items-center gap-1.5 text-ink-muted">
+    {
+      items.map((item, i) => (
+        <li class="flex items-center gap-1.5">
+          {i > 0 && <ChevronRight size={14} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />}
+          {i === items.length - 1 ? (
+            <span aria-current="page" class="font-medium text-ink">
+              {item.name}
+            </span>
+          ) : (
+            <a href={item.path} class="inline-flex min-h-11 items-center text-ink-muted underline decoration-taupe underline-offset-4 hover:text-ink">
+              {item.name}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

@@ -3,6 +3,7 @@ import { Picture } from 'astro:assets';
 import ArrowRight from '@lucide/astro/icons/arrow-right';
 import SectionLabel from './SectionLabel.astro';
 import Confirm from './Confirm.astro';
+import { salonDetails, isPlaceholder } from '../content/site';
 import closeup from '../assets/photos/rachel-monty-closeup.jpg';
 ---
 
@@ -32,7 +33,7 @@ import closeup from '../assets/photos/rachel-monty-closeup.jpg';
         </p>
         <p>
           Whether you're after a quick trim, a brand-new colour or your hair up for a big day, you'll get an
-          honest chat, a cuppa <Confirm note="offer drinks?" /> and hair you'll love. Monty will probably say
+          honest chat, a cuppa {isPlaceholder(salonDetails.drinks) && <Confirm note={salonDetails.drinks.confirm} />} and hair you'll love. Monty will probably say
           hello too.
         </p>
       </div>

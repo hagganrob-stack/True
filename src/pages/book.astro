@@ -1,0 +1,135 @@
+---
+import { getImage } from 'astro:assets';
+import Phone from '@lucide/astro/icons/phone';
+import MapPin from '@lucide/astro/icons/map-pin';
+import Clock from '@lucide/astro/icons/clock';
+import Calendar from '@lucide/astro/icons/calendar';
+import Car from '@lucide/astro/icons/car';
+import Camera from '@lucide/astro/icons/camera';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BookButton from '../components/BookButton.astro';
+import PhoneLink from '../components/PhoneLink.astro';
+import HoursTable from '../components/HoursTable.astro';
+import OpenNow from '../components/OpenNow.astro';
+import MapEmbed from '../components/MapEmbed.astro';
+import Confirm from '../components/Confirm.astro';
+import NewTab from '../components/NewTab.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+import { business, links, salonDetails, isPlaceholder, lateNightNote } from '../content/site';
+import { breadcrumbSchema } from '../lib/schema';
+import { PAGE_HEADER_WIDTHS, PAGE_HEADER_SIZES } from '../lib/images';
+
+import woodland from '../assets/photos/rachel-monty-woodland.jpg';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Book', path: '/book/' },
+];
+const preload = await getImage({ src: woodland, widths: PAGE_HEADER_WIDTHS, format: 'avif' });
+---
+
+<BaseLayout
+  title="Book a Hair Appointment in Whitnash | True Hairdressers"
+  description="Book your cut, colour or blow-dry at True Hairdressers, 75 Home Farm Crescent, Whitnash. Online booking with Fresha, opening hours and directions."
+  schema={[breadcrumbSchema(crumbs)]}
+  preload={{ srcset: preload.srcSet.attribute, sizes: PAGE_HEADER_SIZES, type: 'image/avif' }}
+>
+  <PageHeader
+    crumbs={crumbs}
+    eyebrow="Book online or call"
+    title="Book your appointment"
+    image={{ src: woodland, alt: 'Rachel, owner of True Hairdressers, holding her dog Monty in autumn woodland', position: '50% 18%' }}
+  >
+    <p>
+      The easiest way to book is online with Fresha – you can see every service, price and free slot, and get reminders
+      before your appointment.
+    </p>
+    <Fragment slot="actions">
+      <BookButton location="book-page" class="sm:min-h-14 sm:px-8 sm:text-[17px]" />
+    </Fragment>
+  </PageHeader>
+
+  <section class="py-16 md:py-20" aria-labelledby="call-heading">
+    <div class="container-site grid gap-6 md:grid-cols-3">
+      <div class="rounded-[12px] border border-line bg-surface p-6">
+        <Calendar size={26} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />
+        <h2 class="mt-4 text-[22px] md:text-[24px]">Book online</h2>
+        <p class="mt-2 text-ink-muted">Pick a service and a time that suits you on Fresha, any time of day.</p>
+        <a href={links.fresha} target="_blank" rel="noopener" class="link mt-4 inline-flex min-h-11 items-center" data-track="Fresha click" data-track-location="book-card">
+          Book on Fresha<NewTab />
+        </a>
+      </div>
+      <div class="rounded-[12px] border border-line bg-surface p-6">
+        <Phone size={26} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />
+        <h2 id="call-heading" class="mt-4 text-[22px] md:text-[24px]">Prefer to call?</h2>
+        <p class="mt-2 text-ink-muted">Give the salon a ring and Rachel will find you a slot.</p>
+        <p class="mt-4 text-[18px]"><PhoneLink location="book-page" /></p>
+      </div>
+      <div class="rounded-[12px] border border-line bg-surface p-6">
+        <Clock size={26} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />
+        <h2 class="mt-4 text-[22px] md:text-[24px]">Late Wednesdays</h2>
+        <p class="mt-2 text-ink-muted">{lateNightNote} Handy if you work during the day.</p>
+        <OpenNow class="mt-4" />
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-line bg-surface-soft py-16 md:py-20" aria-labelledby="visit-heading">
+    <div class="container-site grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5">
+        <SectionLabel>Visit the salon</SectionLabel>
+        <h2 id="visit-heading" class="mt-3">Opening hours and directions</h2>
+
+        <div class="mt-8 rounded-[12px] border border-line bg-surface p-4 md:p-6">
+          <h3 class="mb-3 flex items-center gap-2 px-3 font-sans text-[16px] font-semibold">
+            <Clock size={20} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" /> Opening hours
+          </h3>
+          <HoursTable />
+        </div>
+
+        <address class="mt-8 space-y-4 not-italic">
+          <p class="flex gap-3">
+            <MapPin size={20} stroke-width={1.5} aria-hidden="true" class="mt-1 shrink-0 text-taupe-text" />
+            <span>
+              <strong class="font-semibold">{business.name}</strong><br />
+              {business.addressLine}
+            </span>
+          </p>
+          <p class="pl-8">You'll find us on the Home Farm Crescent shops in Whitnash.</p>
+          <p class="flex gap-3">
+            <Car size={20} stroke-width={1.5} aria-hidden="true" class="mt-1 shrink-0 text-taupe-text" />
+            <span>
+              {isPlaceholder(salonDetails.parking) ? <Confirm note={salonDetails.parking.confirm} /> : salonDetails.parking}
+            </span>
+          </p>
+        </address>
+      </div>
+      <div class="space-y-6 lg:col-span-7">
+        <MapEmbed />
+        {
+          salonDetails.salonPhotos && (
+            <div class="flex min-h-40 w-full flex-col py-8 items-center justify-center gap-3 rounded-[12px] border border-dashed border-taupe bg-surface text-center">
+              <Camera size={28} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />
+              <p class="text-small font-medium text-ink-muted">Photo of the salon coming soon</p>
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 md:py-20" aria-labelledby="social-heading">
+    <div class="container-site text-center">
+      <SectionLabel class="justify-center">Social</SectionLabel>
+      <h2 id="social-heading" class="mt-3">Follow along</h2>
+      <p class="mx-auto mt-4 max-w-xl">Follow along for new looks and last-minute slots.</p>
+      <ul class="mt-8 flex flex-wrap justify-center gap-3">
+        <li><a href={links.facebook} target="_blank" rel="noopener" class="btn btn-secondary">Facebook<NewTab /></a></li>
+        <li><a href={links.instagram} target="_blank" rel="noopener" class="btn btn-secondary">Instagram<NewTab /></a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

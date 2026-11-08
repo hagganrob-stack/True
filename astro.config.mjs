@@ -16,6 +16,10 @@ export default defineConfig({
       filter: (page) => !page.includes('/404'),
     }),
   ],
+  build: {
+    // Small site, one stylesheet: inline it to remove the render-blocking request.
+    inlineStylesheets: 'always',
+  },
   image: {
     responsiveStyles: false,
   },

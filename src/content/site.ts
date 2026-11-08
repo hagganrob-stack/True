@@ -211,6 +211,25 @@ export const products = [
 ] as const;
 
 // ---------------------------------------------------------------------------
+// Salon details still waiting on Rachel (BRIEF §10). Swap each confirm() for
+// the real answer (a string) once she replies.
+// ---------------------------------------------------------------------------
+
+export const salonDetails = {
+  drinks: confirm('offer drinks?') as Placeholder | string,
+  parking: confirm('parking – is there free parking outside the parade?') as Placeholder | string,
+  patchTest: confirm('patch/skin test policy for colour clients') as Placeholder | string,
+  monty: confirm('is Monty in the salon most days? breed? (useful for anyone with allergies)') as
+    | Placeholder
+    | string,
+  mariaNilaAngle: confirm('Maria Nila is vegan/cruelty-free – only mention if Rachel wants that angle') as
+    | Placeholder
+    | string
+    | null,
+  salonPhotos: confirm('photos of the salon front and inside') as Placeholder | null,
+};
+
+// ---------------------------------------------------------------------------
 // Navigation
 // ---------------------------------------------------------------------------
 

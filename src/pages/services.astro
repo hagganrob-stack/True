@@ -1,0 +1,164 @@
+---
+import { getImage, Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Scissors from '@lucide/astro/icons/scissors';
+import Palette from '@lucide/astro/icons/palette';
+import Wind from '@lucide/astro/icons/wind';
+import Sparkles from '@lucide/astro/icons/sparkles';
+import Info from '@lucide/astro/icons/info';
+import ArrowRight from '@lucide/astro/icons/arrow-right';
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import BookButton from '../components/BookButton.astro';
+import BookCTA from '../components/BookCTA.astro';
+import Confirm from '../components/Confirm.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+import { services, serviceGroups, salonDetails, isPlaceholder, type ServiceGroup } from '../content/site';
+import { breadcrumbSchema } from '../lib/schema';
+import { PAGE_HEADER_WIDTHS, PAGE_HEADER_SIZES } from '../lib/images';
+
+import headerImg from '../assets/stock/stylist-sectioning-hair.jpg';
+import cuttingImg from '../assets/stock/scissors-cutting-wet-hair.jpg';
+import colourImg from '../assets/stock/brunette-balayage-waves.jpg';
+import blowDryImg from '../assets/stock/stylist-curling-blonde-waves.jpg';
+import hairUpImg from '../assets/stock/occasion-updo-hair-vine.jpg';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services/' },
+];
+
+const preload = await getImage({ src: headerImg, widths: PAGE_HEADER_WIDTHS, format: 'avif' });
+
+const groups: {
+  id: ServiceGroup;
+  icon: any;
+  image: { src: ImageMetadata; alt: string; position?: string };
+}[] = [
+  {
+    id: 'cutting',
+    icon: Scissors,
+    image: { src: cuttingImg, alt: 'Close-up of scissors cutting a section of wet brown hair', position: '50% 50%' },
+  },
+  {
+    id: 'colour',
+    icon: Palette,
+    image: { src: colourImg, alt: 'Long brunette hair with soft caramel balayage waves', position: '50% 35%' },
+  },
+  {
+    id: 'blow-dries',
+    icon: Wind,
+    image: { src: blowDryImg, alt: 'Stylist curling long blonde hair into loose waves with tongs', position: '55% 40%' },
+  },
+  {
+    id: 'hair-up',
+    icon: Sparkles,
+    image: { src: hairUpImg, alt: 'Soft low updo decorated with a crystal hair vine', position: '50% 40%' },
+  },
+];
+---
+
+<BaseLayout
+  title="Hair Services in Whitnash | Cuts, Colour & Hair Up | True Hairdressers"
+  description="Ladies' and gents' cuts, Goldwell colour, creative colour, blow-dries and hair up in Whitnash, Leamington Spa. See prices and book online."
+  schema={[breadcrumbSchema(crumbs)]}
+  preload={{ srcset: preload.srcSet.attribute, sizes: PAGE_HEADER_SIZES, type: 'image/avif' }}
+>
+  <PageHeader
+    crumbs={crumbs}
+    eyebrow="Services"
+    title="Hair services in Whitnash"
+    shape="landscape"
+    image={{ src: headerImg, alt: 'Stylist sectioning long blonde hair in front of ring lights', position: '45% 40%' }}
+  >
+    <p>
+      Everything from a tidy-up to a total transformation, all done by Rachel using professional Goldwell colour.
+      Prices and availability are on Fresha, where you can book in a couple of taps.
+    </p>
+    <Fragment slot="actions">
+      <BookButton label="See prices and book on Fresha" location="services-header" />
+    </Fragment>
+  </PageHeader>
+
+  <!-- Jump links -->
+  <nav aria-label="Services on this page" class="border-b border-line bg-surface-soft">
+    <ul class="container-site flex flex-wrap gap-x-6 gap-y-1 py-3">
+      {
+        groups.map((g) => (
+          <li>
+            <a href={`#${g.id}`} class="inline-flex min-h-11 items-center gap-2 font-medium text-ink no-underline hover:underline decoration-taupe underline-offset-4">
+              <g.icon size={18} stroke-width={1.5} aria-hidden="true" class="text-taupe-text" />
+              {serviceGroups[g.id].name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    groups.map((g, i) => {
+      const items = services.filter((s) => s.group === g.id);
+      return (
+        <section id={g.id} class:list={['scroll-mt-24 py-16 md:py-20', i % 2 === 1 && 'bg-surface-soft']} aria-label={serviceGroups[g.id].name}>
+          <div class="container-site grid items-center gap-10 md:grid-cols-12 md:gap-14">
+            <div class:list={['md:col-span-5', i % 2 === 1 && 'md:order-2']}>
+              <Picture
+                src={g.image.src}
+                alt={g.image.alt}
+                formats={['avif', 'webp']}
+                widths={[400, 640, 900]}
+                sizes="(min-width: 1024px) 460px, (min-width: 768px) 40vw, 92vw"
+                loading="lazy"
+                decoding="async"
+                class:list={['aspect-[4/3] w-full rounded-[12px] object-cover', items.length > 1 && 'md:aspect-[4/5]']}
+                style={g.image.position ? `object-position: ${g.image.position}` : undefined}
+              />
+            </div>
+            <div class="md:col-span-7">
+              <SectionLabel>
+                <g.icon size={16} stroke-width={1.5} aria-hidden="true" />
+                {serviceGroups[g.id].name}
+              </SectionLabel>
+              <div class="mt-4 divide-y divide-line">
+                {items.map((s) => (
+                  <article id={s.id} class="scroll-mt-24 py-6 first:pt-2">
+                    <h2 class="text-[26px] md:text-[30px]">{s.name}</h2>
+                    <p class="mt-3 max-w-prose">{s.description}</p>
+                    {s.confirm && (
+                      <p class="mt-3">
+                        <Confirm note={s.confirm} />
+                      </p>
+                    )}
+                  </article>
+                ))}
+              </div>
+
+              {g.id === 'colour' && (
+                <aside class="mt-4 flex gap-3 rounded-[12px] border border-line bg-surface p-5" aria-label="Before your colour appointment">
+                  <Info size={22} stroke-width={1.5} aria-hidden="true" class="mt-0.5 shrink-0 text-taupe-text" />
+                  <div>
+                    <p class="font-semibold">New to colour with us?</p>
+                    <p class="mt-1 text-small text-ink-muted">
+                      {isPlaceholder(salonDetails.patchTest) ? <Confirm note={salonDetails.patchTest.confirm} /> : salonDetails.patchTest}
+                    </p>
+                  </div>
+                </aside>
+              )}
+
+              {g.id === 'colour' && (
+                <a href="/about/" class="link mt-6 inline-flex min-h-11 items-center gap-1.5">
+                  Trained by Goldwell – meet Rachel <ArrowRight size={18} stroke-width={1.5} aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
+      );
+    })
+  }
+
+  <BookCTA heading="See prices and book on Fresha" location="services-cta" />
+</BaseLayout>
