@@ -19,7 +19,12 @@ npm run dev       # local dev
 npm run check     # astro check (types + diagnostics)
 npm run build     # astro check && astro build
 node scripts/process-brief-assets.mjs   # re-create src/assets + favicons from brief-assets/
+node scripts/make-og-image.cjs          # re-render public/og-image.jpg (needs Playwright)
 ```
+
+## Deployment
+
+Vercel project `true-hairdressers` (team Peak), linked to GitHub `hagganrob-stack/True`. Every push to the production branch deploys automatically; other branches get preview URLs. Production alias until the domain is confirmed: https://true-hairdressers.vercel.app (also `SITE_URL` in `site.ts` – update both at go-live).
 
 ## Layout
 
