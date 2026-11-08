@@ -10,6 +10,7 @@ import BookButton from '../components/BookButton.astro';
 import BookCTA from '../components/BookCTA.astro';
 import Confirm from '../components/Confirm.astro';
 import SectionLabel from '../components/SectionLabel.astro';
+import TropicSection from '../components/TropicSection.astro';
 
 import { business, qualifications, salonDetails, isPlaceholder } from '../content/site';
 import { breadcrumbSchema, personSchema } from '../lib/schema';
@@ -174,6 +175,8 @@ const { owner } = business;
       </div>
     </div>
   </section>
+
+  <TropicSection />
 
   <BookCTA location="about-cta" />
 </BaseLayout>

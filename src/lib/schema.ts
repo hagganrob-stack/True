@@ -88,6 +88,7 @@ export function personSchema(image: string) {
     jobTitle: owner.jobTitle,
     image,
     worksFor: { '@id': SALON_ID },
+    sameAs: [links.tropic],
     hasCredential: qualifications.map((name) => ({
       '@type': 'EducationalOccupationalCredential',
       name,

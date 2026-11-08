@@ -59,6 +59,8 @@ export const links = {
   facebook: 'https://www.facebook.com/Truehairdresserswhitnash/',
   instagram: 'https://www.instagram.com/truehairdressers/',
   peakSeo: 'https://peakseo.co.uk',
+  /** Rachel's Tropic Ambassador shop – orders through it are linked to her. */
+  tropic: 'https://www.tropicskincare.com/rachelpalmer',
   directions:
     'https://www.google.com/maps/dir/?api=1&destination=True+Hairdressers%2C+75+Home+Farm+Crescent%2C+Whitnash%2C+Leamington+Spa+CV31+2QY',
   mapEmbed:
@@ -223,6 +225,16 @@ export const salonDetails = {
       | string,
   mariaNilaAngle: 'Maria Nila products are 100% vegan and cruelty-free.' as Placeholder | string | null,
 };
+
+// ---------------------------------------------------------------------------
+// Tropic – Rachel is a Tropic Ambassador (separate from the salon's products).
+// ---------------------------------------------------------------------------
+
+export const tropic = {
+  name: 'Tropic',
+  role: 'Tropic Ambassador',
+  linkLabel: 'Shop Tropic with Rachel',
+} as const;
 
 // ---------------------------------------------------------------------------
 // Navigation
