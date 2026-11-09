@@ -5,7 +5,7 @@ import Clock from '@lucide/astro/icons/clock';
 import Logo from './Logo.astro';
 import NewTab from './NewTab.astro';
 import PhoneLink from './PhoneLink.astro';
-import { business, links, hours, formatHours, nav } from '../content/site';
+import { business, links, photoCredit, hours, formatHours, nav } from '../content/site';
 
 const year = new Date().getFullYear();
 const iconProps = { size: 20, 'stroke-width': 1.5, 'aria-hidden': 'true' as const, class: 'mt-1 shrink-0 text-taupe-light' };
@@ -101,6 +101,10 @@ const social = [
     </div>
     <div class="container-site flex flex-col gap-2 pb-8 text-small text-taupe-light md:flex-row md:justify-between">
       <p>© {year} {business.name}</p>
+      <p>
+        {photoCredit.subject} by{" "}
+        <a href={links.photographer} target="_blank" rel="noopener" class="link">{photoCredit.display}<NewTab /></a>
+      </p>
       <p>
         Website by <a href={links.peakSeo} target="_blank" rel="noopener" class="link">Peak SEO<NewTab /></a>
       </p>

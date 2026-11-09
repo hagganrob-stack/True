@@ -59,6 +59,8 @@ export const links = {
   facebook: 'https://www.facebook.com/Truehairdresserswhitnash/',
   instagram: 'https://www.instagram.com/truehairdressers/',
   peakSeo: 'https://peakseo.co.uk',
+  /** Took the photos of Rachel and Monty – credited in the footer and on About. */
+  photographer: 'https://www.kerriepalmerphotography.co.uk/',
   /** Rachel's Tropic Ambassador shop – orders through it are linked to her. */
   tropic: 'https://www.tropicskincare.com/rachelpalmer',
   directions:
@@ -234,6 +236,16 @@ export const tropic = {
   name: 'Tropic',
   role: 'Tropic Ambassador',
   linkLabel: 'Shop Tropic with Rachel',
+} as const;
+
+// ---------------------------------------------------------------------------
+// Photo credit
+// ---------------------------------------------------------------------------
+
+export const photoCredit = {
+  subject: 'Photos of Rachel and Monty',
+  name: 'Kerrie Palmer Photography',
+  display: 'kerriepalmerphotography.co.uk',
 } as const;
 
 // ---------------------------------------------------------------------------
