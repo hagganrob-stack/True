@@ -21,6 +21,7 @@ import HoursTable from '../components/HoursTable.astro';
 import OpenNow from '../components/OpenNow.astro';
 import MapEmbed from '../components/MapEmbed.astro';
 import BookCTA from '../components/BookCTA.astro';
+import Reviews from '../components/Reviews.astro';
 import PhoneLink from '../components/PhoneLink.astro';
 
 import { business, serviceGroups, lateNightNote, type ServiceGroup } from '../content/site';
@@ -133,7 +134,7 @@ const stats = [
     </div>
   </section>
 
-  <!-- Reviews: add <Reviews /> here once the Google reviews are in site.ts -->
+  <Reviews />
 
   <!-- Monty + products -->
   <section class="bg-surface-soft py-16 md:py-20" aria-label="Monty and the products we use">

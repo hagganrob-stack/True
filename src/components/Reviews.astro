@@ -42,19 +42,19 @@ const monthYear = (ym: string) =>
 
         <ul
           class:list={[
-            'mt-10 grid gap-6',
-            list.length === 1 ? 'max-w-3xl' : list.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3',
+            'mt-10 gap-6',
+            list.length === 1 ? 'max-w-3xl' : list.length === 2 ? 'md:columns-2' : 'md:columns-2 lg:columns-3',
           ]}
         >
           {list.map((r) => (
-            <li class="flex">
+            <li class="mb-6 break-inside-avoid">
               <figure class="flex w-full flex-col rounded-[12px] border border-line bg-surface p-6 md:p-7">
                 <p class="flex gap-0.5 text-taupe-text" aria-label={`${r.rating} out of 5 stars`} role="img">
                   {Array.from({ length: 5 }, (_, i) => (
                     <Star size={18} stroke-width={1.5} aria-hidden="true" fill={i < r.rating ? 'currentColor' : 'none'} />
                   ))}
                 </p>
-                <blockquote class="mt-4 flex-1 text-[17px] leading-7 text-ink">
+                <blockquote class="mt-4 text-[17px] leading-7 text-ink">
                   <p>“{r.text}”</p>
                 </blockquote>
                 <figcaption class="mt-5 border-t border-line pt-4 text-small text-ink-muted">

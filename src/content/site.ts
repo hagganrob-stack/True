@@ -242,7 +242,7 @@ export const tropic = {
 
 // ---------------------------------------------------------------------------
 // Reviews – copied WORD FOR WORD from Google / Fresha. Never edit the text,
-// never write one. First name or initial only, as shown on the platform.
+// never write one. Shown as first name + surname initial for privacy.
 // No Review/AggregateRating schema (Google treats self-hosted reviews of your
 // own business as ineligible for stars, and the brief rules it out).
 // ---------------------------------------------------------------------------
@@ -257,12 +257,51 @@ export interface Review {
 }
 
 export const reviews: Review[] = [
+  // Google reviews pulled via Local Falcon (Nov 2026), quoted exactly.
+  // Left out on purpose: reviews naming other stylists ("Caz", "Siobhan",
+  // "stylists"), the wedding-party review (Rachel doesn't do bridal), empty
+  // star-only reviews, and the reviewer related to Peak SEO.
   {
-    author: 'Lucy',
+    author: 'Lucy A.',
     rating: 5,
-    source: 'Fresha',
-    date: '2025-10',
-    text: "Rachel was the absolute best for cutting my son's hair today. We've been going to a child's hairdresser for 3 years but their focus was never on my son and he kept getting upset and frustrated making the whole thing a negative experience for him. Rachel interacted with him from the outset and made the whole thing so positive resulting in him being relaxed and happy and not upset once. Thanks SO much! I don't know why we didn't come to you sooner!",
+    source: 'Google',
+    date: '2026-07',
+    text: "I've been coming to Rachel for over 4 years now and I wouldn't go anywhere else. No one can cut bobbed hair as good as her! She's always got great advice when I want a change or try a new product. Great chat and good fun every time I visit. I also bring my son to have his haircut with Rachel after a bad experience with a children's hairdresser and she's fantastic with him and he's now much more relaxed about getting his haircut. I highly recommend!",
+  },
+  {
+    author: 'Laura C.',
+    rating: 5,
+    source: 'Google',
+    date: '2026-03',
+    text: 'Lovely salon experience. Rachel is a highly skilled and very knowledgeable hairdresser. I wouldn’t trust anyone else.',
+  },
+  {
+    author: 'Maggie S.',
+    rating: 5,
+    source: 'Google',
+    date: '2026-03',
+    text: 'Amazing service, great atmosphere. Rachel always makes you feel welcome and relaxed. Great knowledge and creativity',
+  },
+  {
+    author: 'Nichola B.',
+    rating: 5,
+    source: 'Google',
+    date: '2026-09',
+    text: 'Amazing people. Perfect cut! And.... Good cuppa tea. Winner x',
+  },
+  {
+    author: 'Michelle H.',
+    rating: 5,
+    source: 'Google',
+    date: '2026-03',
+    text: 'Very friendly salon. Colour, cuts and styling always great, I always come out feeling 100%!!!',
+  },
+  {
+    author: 'Bal P.',
+    rating: 5,
+    source: 'Google',
+    date: '2026-03',
+    text: 'Always a pleasure, great service, love my hair xx',
   },
 ];
 

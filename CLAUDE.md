@@ -31,7 +31,7 @@ Vercel project `true-hairdressers` (team Peak), linked to GitHub `hagganrob-stac
 - `src/content/site.ts` – single source of truth. `confirm('…')` marks a fact still waiting on Rachel.
 - `src/lib/schema.ts` – JSON-LD builders (HairSalon sitewide, Person, BreadcrumbList). No AggregateRating/Review.
 - `src/layouts/BaseLayout.astro` – head (title, description, canonical, OG/Twitter, JSON-LD, preloads), skip link, header, footer, analytics.
-- `src/components/` – Header, Footer, Logo, Hero, SectionLabel, ServiceCard, AboutTeaser, MontyCard, ProductStrip, HoursTable, OpenNow, MapEmbed, BookCTA, BookButton, PhoneLink, Confirm, NewTab.
+- `src/components/` – Header, Footer, Logo, Hero, SectionLabel, ServiceCard, AboutTeaser, MontyCard, ProductStrip, HoursTable, OpenNow, MapEmbed, BookCTA, BookButton, PhoneLink, Confirm, NewTab, Reviews (word-for-word Google reviews from `site.ts`, no review schema), TropicSection.
 - `src/assets/photos/` real photos of Rachel and Monty, and of the salon (from Fresha); `src/assets/stock/` stock photos; `src/assets/logos/` True logo (stacked, used in header and footer via `Logo`), circle mark (favicon/OG only), Goldwell.
 - `brief-assets/` – original files from Basecamp (sources only, not served).
 
