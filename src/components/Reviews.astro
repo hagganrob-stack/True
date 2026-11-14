@@ -1,75 +1,107 @@
 ---
 import Star from '@lucide/astro/icons/star';
+import ArrowUpRight from '@lucide/astro/icons/arrow-up-right';
 import SectionLabel from './SectionLabel.astro';
 import NewTab from './NewTab.astro';
-import { reviews, links } from '../content/site';
+import GoogleG from './GoogleG.astro';
+import { reviews, links, googleRating, type Review } from '../content/site';
 
 /**
- * Client reviews, quoted word for word from Google / Fresha (see site.ts).
- * Renders nothing if there are no reviews. No review schema on purpose.
+ * Client reviews, quoted word for word (see site.ts).
+ * Layout: the first review is a large featured quote; the next four sit in
+ * a 2×2 grid beside it. No review schema on purpose.
  */
-interface Props {
-  heading?: string;
-  /** Show at most this many (newest first, as ordered in site.ts). */
-  limit?: number;
-}
-const { heading = 'Kind words from clients', limit = 6 } = Astro.props;
-const list = reviews.slice(0, limit);
+const [featured, ...others] = reviews;
+const rest = others.slice(0, 4);
 const sourceUrl = { Google: links.googleReviews, Fresha: links.fresha } as const;
 const monthYear = (ym: string) =>
   new Date(`${ym}-01T00:00:00Z`).toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const stars = (r: Review['rating']) => Array.from({ length: 5 }, (_, i) => i < r);
 ---
 
 {
-  list.length > 0 && (
+  featured && (
     <section class="border-t border-line py-16 md:py-24" aria-labelledby="reviews-heading">
       <div class="container-site">
         <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div class="max-w-2xl">
             <SectionLabel>Reviews</SectionLabel>
-            <h2 id="reviews-heading" class="mt-3">{heading}</h2>
+            <h2 id="reviews-heading" class="mt-3">Kind words from clients</h2>
           </div>
+
+          <!-- Google rating badge -->
           <a
             href={links.googleReviews}
             target="_blank"
             rel="noopener"
-            class="link inline-flex min-h-11 items-center self-start md:self-auto"
+            class="group inline-flex items-center gap-4 self-start rounded-[12px] border border-line bg-surface py-3 pr-5 pl-4 no-underline shadow-[0_1px_2px_rgba(44,44,44,0.04)] transition-shadow hover:shadow-[0_8px_24px_-12px_rgba(44,44,44,0.3)] md:self-auto"
           >
-            Read our reviews on Google
+            <GoogleG size={32} class="shrink-0" />
+            <span class="flex flex-col">
+              <span class="flex items-center gap-2">
+                <span class="font-serif text-[22px] leading-none font-semibold text-ink">{googleRating.rating.toFixed(1)}</span>
+                <span class="flex gap-0.5 text-[#E8A317]" aria-hidden="true">
+                  {stars(5).map(() => (
+                    <Star size={15} stroke-width={1.5} fill="currentColor" />
+                  ))}
+                </span>
+              </span>
+              <span class="mt-1 text-small text-ink-muted group-hover:text-ink">
+                <span class="sr-only">Rated {googleRating.rating} out of 5 from </span>
+                {googleRating.count} reviews · <span class="font-semibold text-taupe-text underline decoration-taupe underline-offset-4 group-hover:text-ink">Read them on Google</span>
+              </span>
+            </span>
+            <ArrowUpRight size={18} stroke-width={1.5} aria-hidden="true" class="shrink-0 text-taupe-text" />
             <NewTab />
           </a>
         </div>
 
-        <ul
-          class:list={[
-            'mt-10 gap-6',
-            list.length === 1 ? 'max-w-3xl' : list.length === 2 ? 'md:columns-2' : 'md:columns-2 lg:columns-3',
-          ]}
-        >
-          {list.map((r) => (
-            <li class="mb-6 break-inside-avoid">
-              <figure class="flex w-full flex-col rounded-[12px] border border-line bg-surface p-6 md:p-7">
-                <p class="flex gap-0.5 text-taupe-text" aria-label={`${r.rating} out of 5 stars`} role="img">
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <Star size={18} stroke-width={1.5} aria-hidden="true" fill={i < r.rating ? 'currentColor' : 'none'} />
-                  ))}
-                </p>
-                <blockquote class="mt-4 text-[17px] leading-7 text-ink">
-                  <p>“{r.text}”</p>
-                </blockquote>
-                <figcaption class="mt-5 border-t border-line pt-4 text-small text-ink-muted">
-                  <span class="font-semibold text-ink">{r.author}</span>
-                  {' · '}
-                  <a href={sourceUrl[r.source]} target="_blank" rel="noopener" class="underline decoration-taupe underline-offset-4 hover:text-ink">
-                    {r.source} review<NewTab />
-                  </a>
-                  {' · '}
-                  {monthYear(r.date)}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+        <div class="mt-10 grid gap-6 lg:grid-cols-12">
+          <!-- Featured review -->
+          <figure class="relative flex flex-col overflow-hidden rounded-[12px] bg-surface-soft p-7 md:p-10 lg:col-span-5">
+            <span aria-hidden="true" class="pointer-events-none absolute -top-6 right-4 font-serif text-[180px] leading-none text-taupe/40 select-none">”</span>
+            <p class="relative flex gap-0.5 text-taupe-text" role="img" aria-label={`${featured.rating} out of 5 stars`}>
+              {stars(featured.rating).map((on) => (
+                <Star size={20} stroke-width={1.5} aria-hidden="true" fill={on ? 'currentColor' : 'none'} />
+              ))}
+            </p>
+            <blockquote class="relative mt-5 flex-1 font-serif text-[19px] leading-[1.55] font-medium text-ink md:text-[20px]">
+              <p>“{featured.text}”</p>
+            </blockquote>
+            <figcaption class="relative mt-8 flex items-center gap-3 text-small text-ink-muted">
+              <GoogleG size={20} class="shrink-0" />
+              <span>
+                <span class="block font-semibold text-ink">{featured.author}</span>
+                {featured.source} review · {monthYear(featured.date)}
+              </span>
+            </figcaption>
+          </figure>
+
+          <!-- Four shorter reviews -->
+          <ul class="grid gap-6 sm:grid-cols-2 lg:col-span-7">
+            {rest.map((r) => (
+              <li class="flex">
+                <figure class="flex w-full flex-col rounded-[12px] border border-line bg-surface p-6">
+                  <p class="flex gap-0.5 text-taupe-text" role="img" aria-label={`${r.rating} out of 5 stars`}>
+                    {stars(r.rating).map((on) => (
+                      <Star size={16} stroke-width={1.5} aria-hidden="true" fill={on ? 'currentColor' : 'none'} />
+                    ))}
+                  </p>
+                  <blockquote class="mt-4 flex-1 text-[17px] leading-7 text-ink">
+                    <p>“{r.text}”</p>
+                  </blockquote>
+                  <figcaption class="mt-5 flex items-center gap-2.5 border-t border-line pt-4 text-small text-ink-muted">
+                    {r.source === 'Google' && <GoogleG size={16} class="shrink-0" />}
+                    <span>
+                      <span class="font-semibold text-ink">{r.author}</span> · {monthYear(r.date)}
+                      <span class="sr-only"> ({r.source} review)</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   )

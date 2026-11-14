@@ -256,6 +256,10 @@ export interface Review {
   date: string;
 }
 
+/** Google rating summary shown on the reviews badge. Update when it changes. */
+export const googleRating = { rating: 4.9, count: 17, asOf: '2026-11' } as const;
+
+/** The first review is shown large as the featured quote; the next four sit beside it. */
 export const reviews: Review[] = [
   // Google reviews pulled via Local Falcon (Nov 2026), quoted exactly.
   // Left out on purpose: reviews naming other stylists ("Caz", "Siobhan",
@@ -283,18 +287,18 @@ export const reviews: Review[] = [
     text: 'Amazing service, great atmosphere. Rachel always makes you feel welcome and relaxed. Great knowledge and creativity',
   },
   {
-    author: 'Nichola B.',
-    rating: 5,
-    source: 'Google',
-    date: '2026-09',
-    text: 'Amazing people. Perfect cut! And.... Good cuppa tea. Winner x',
-  },
-  {
     author: 'Michelle H.',
     rating: 5,
     source: 'Google',
     date: '2026-03',
     text: 'Very friendly salon. Colour, cuts and styling always great, I always come out feeling 100%!!!',
+  },
+  {
+    author: 'Nichola B.',
+    rating: 5,
+    source: 'Google',
+    date: '2026-09',
+    text: 'Amazing people. Perfect cut! And.... Good cuppa tea. Winner x',
   },
   {
     author: 'Bal P.',
