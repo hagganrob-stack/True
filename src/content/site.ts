@@ -61,6 +61,8 @@ export const links = {
   peakSeo: 'https://peakseo.co.uk',
   /** Took the photos of Rachel and Monty – credited in the footer and on About. */
   photographer: 'https://www.kerriepalmerphotography.co.uk/',
+  /** Google Business Profile – where "Read more reviews" points. */
+  googleReviews: 'https://www.google.com/maps/place/?q=place_id:ChIJ2wP5RwU1d0gRX4uqPU52nvY',
   /** Rachel's Tropic Ambassador shop – orders through it are linked to her. */
   tropic: 'https://www.tropicskincare.com/rachelpalmer',
   directions:
@@ -237,6 +239,32 @@ export const tropic = {
   role: 'Tropic Ambassador',
   linkLabel: 'Shop Tropic with Rachel',
 } as const;
+
+// ---------------------------------------------------------------------------
+// Reviews – copied WORD FOR WORD from Google / Fresha. Never edit the text,
+// never write one. First name or initial only, as shown on the platform.
+// No Review/AggregateRating schema (Google treats self-hosted reviews of your
+// own business as ineligible for stars, and the brief rules it out).
+// ---------------------------------------------------------------------------
+
+export interface Review {
+  author: string;
+  text: string;
+  rating: 1 | 2 | 3 | 4 | 5;
+  source: 'Google' | 'Fresha';
+  /** YYYY-MM, as shown on the platform. */
+  date: string;
+}
+
+export const reviews: Review[] = [
+  {
+    author: 'Lucy',
+    rating: 5,
+    source: 'Fresha',
+    date: '2025-10',
+    text: "Rachel was the absolute best for cutting my son's hair today. We've been going to a child's hairdresser for 3 years but their focus was never on my son and he kept getting upset and frustrated making the whole thing a negative experience for him. Rachel interacted with him from the outset and made the whole thing so positive resulting in him being relaxed and happy and not upset once. Thanks SO much! I don't know why we didn't come to you sooner!",
+  },
+];
 
 // ---------------------------------------------------------------------------
 // Photo credit

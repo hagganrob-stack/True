@@ -1,0 +1,76 @@
+---
+import Star from '@lucide/astro/icons/star';
+import SectionLabel from './SectionLabel.astro';
+import NewTab from './NewTab.astro';
+import { reviews, links } from '../content/site';
+
+/**
+ * Client reviews, quoted word for word from Google / Fresha (see site.ts).
+ * Renders nothing if there are no reviews. No review schema on purpose.
+ */
+interface Props {
+  heading?: string;
+  /** Show at most this many (newest first, as ordered in site.ts). */
+  limit?: number;
+}
+const { heading = 'Kind words from clients', limit = 6 } = Astro.props;
+const list = reviews.slice(0, limit);
+const sourceUrl = { Google: links.googleReviews, Fresha: links.fresha } as const;
+const monthYear = (ym: string) =>
+  new Date(`${ym}-01T00:00:00Z`).toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+
+{
+  list.length > 0 && (
+    <section class="border-t border-line py-16 md:py-24" aria-labelledby="reviews-heading">
+      <div class="container-site">
+        <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div class="max-w-2xl">
+            <SectionLabel>Reviews</SectionLabel>
+            <h2 id="reviews-heading" class="mt-3">{heading}</h2>
+          </div>
+          <a
+            href={links.googleReviews}
+            target="_blank"
+            rel="noopener"
+            class="link inline-flex min-h-11 items-center self-start md:self-auto"
+          >
+            Read our reviews on Google
+            <NewTab />
+          </a>
+        </div>
+
+        <ul
+          class:list={[
+            'mt-10 grid gap-6',
+            list.length === 1 ? 'max-w-3xl' : list.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3',
+          ]}
+        >
+          {list.map((r) => (
+            <li class="flex">
+              <figure class="flex w-full flex-col rounded-[12px] border border-line bg-surface p-6 md:p-7">
+                <p class="flex gap-0.5 text-taupe-text" aria-label={`${r.rating} out of 5 stars`} role="img">
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <Star size={18} stroke-width={1.5} aria-hidden="true" fill={i < r.rating ? 'currentColor' : 'none'} />
+                  ))}
+                </p>
+                <blockquote class="mt-4 flex-1 text-[17px] leading-7 text-ink">
+                  <p>“{r.text}”</p>
+                </blockquote>
+                <figcaption class="mt-5 border-t border-line pt-4 text-small text-ink-muted">
+                  <span class="font-semibold text-ink">{r.author}</span>
+                  {' · '}
+                  <a href={sourceUrl[r.source]} target="_blank" rel="noopener" class="underline decoration-taupe underline-offset-4 hover:text-ink">
+                    {r.source} review<NewTab />
+                  </a>
+                  {' · '}
+                  {monthYear(r.date)}
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}
