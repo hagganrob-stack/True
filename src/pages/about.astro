@@ -69,7 +69,7 @@ const { owner } = business;
           </p>
           <p>
             I opened True {isPlaceholder(business.yearOpened) ? <Confirm note={business.yearOpened.confirm} /> : `in ${business.yearOpened}`}
-            {' '}to give Whitnash a friendly, relaxed salon where you're treated like a neighbour, not a number.
+            {' '}to give Whitnash a friendly, relaxed salon where you're treated like a neighbour.
           </p>
         </div>
         <a href="/services/" class="link mt-8 inline-flex min-h-11 items-center gap-1.5">
@@ -165,15 +165,6 @@ const { owner } = business;
           Every good salon needs a manager, and ours has four paws. Monty's in charge of greetings, moral support and
           checking everyone's happy with their new look.
         </p>
-        {
-          isPlaceholder(salonDetails.monty) ? (
-            <p class="mt-3">
-              <Confirm note={salonDetails.monty.confirm} />
-            </p>
-          ) : (
-            <p class="mt-3 text-ink-muted">{salonDetails.monty}</p>
-          )
-        }
         <div class="mt-8">
           <BookButton location="about-monty" />
         </div>

@@ -143,7 +143,7 @@ export const services: Service[] = [
     name: 'Creative cutting',
     group: 'cutting',
     description:
-      'Something new? Goldwell creative cutting training means Rachel can take you somewhere different, from a restyle to a bold change.',
+      'Something new? My Goldwell creative cutting training means I can take you somewhere different, from a restyle to a bold change.',
   },
   {
     id: 'colouring',
@@ -223,10 +223,6 @@ export const products = [
 export const salonDetails = {
   drinks: 'Tea and coffee on offer' as Placeholder | string,
   parking: 'Free parking outside the parade.' as Placeholder | string,
-  monty:
-    "Monty's a toy poodle and he's in the salon most days – worth knowing if you have a dog allergy." as
-      | Placeholder
-      | string,
   mariaNilaAngle: 'Maria Nila products are 100% vegan and cruelty-free.' as Placeholder | string | null,
 };
 
